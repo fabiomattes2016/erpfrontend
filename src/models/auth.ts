@@ -19,6 +19,6 @@ export type ApiGetUser = {
 export type ApiSignin = {
     user: User;
     enterprise: UserEnterpriseDetail;
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken: string;
 }

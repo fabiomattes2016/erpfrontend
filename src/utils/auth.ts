@@ -43,8 +43,10 @@ export const useAuth = () => {
             dispatch(setUser(response.data.user));
             dispatch(setUserEnterprise(response.data.enterprise));
 
-            localStorage.setItem(LOCAL_STORAGE_KEY, response.data.access_token);
+            localStorage.setItem(LOCAL_STORAGE_KEY, response.data.accessToken);
         }
+
+        return response;
     }
 
     const handleSignOut = () => {
