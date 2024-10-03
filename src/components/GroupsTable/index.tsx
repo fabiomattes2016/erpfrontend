@@ -41,14 +41,14 @@ function GroupsTable({groupsList, refreshList}: Props) {
                         </TableHead>
 
                         <TableBody>
-                            {groupsList.map(group => {
+                            {groupsList.map((group) => (
                                 <TableRow hover key={group.id}>
                                     <TableCell>
                                         <Typography 
                                             fontWeight="bold"
                                             gutterBottom
                                         >
-                                            # {group.id}
+                                            #{group.id}
                                         </Typography>
                                     </TableCell>
 
@@ -65,8 +65,8 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                         {
                                             handlePermissionExists('change_group') &&
                                             <Tooltip title="Editar cargo" arrow>
-                                                <IconButton>
-                                                    <EditTwoToneIcon onClick={() => handleEditGroup(group.id)} />
+                                                <IconButton onClick={() => handleEditGroup(group.id)}>
+                                                    <EditTwoToneIcon />
                                                 </IconButton>
                                             </Tooltip>
                                         }
@@ -74,14 +74,14 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                         {
                                             handlePermissionExists('delete_group') &&
                                             <Tooltip title="Excluir cargo" arrow>
-                                                <IconButton>
-                                                    <DeleteTwoToneIcon onClick={() => handleDeleteGroup(group.id)} />
+                                                <IconButton onClick={() => handleDeleteGroup(group.id)}>
+                                                    <DeleteTwoToneIcon />
                                                 </IconButton>
                                             </Tooltip>
                                         }
                                     </TableCell>
                                 </TableRow>
-                            })}
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
