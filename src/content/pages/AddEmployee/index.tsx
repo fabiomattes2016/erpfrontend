@@ -4,48 +4,38 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import PageTitle from "src/components/PageTitle";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
-import PermissionsList from "src/components/PermissionsList";
 import { PermissionMiddleware } from "src/middlewares/permissionMiddleware";
-import { groupDTO } from "src/models/dto/groupDTO";
-import { PermissionDetail } from "src/models/permission";
+import { employeeDTO } from "src/models/dto/employeeDTO";
 import { useRequests } from "src/utils/requests";
 
-function AddGroup() {
+function AddEmployee() {
     const [requestLoading, setRequestLoading] = useState(false);
     const [infoMessage, setInfoMessage] = useState('');
     const [nameInput, setNameInput] = useState('');
-    const [permissionsData, setPermissionsData] = useState<PermissionDetail[]>([])
-    const [selectedPermissions, setSelectedPermissions] = useState<number[]>([])
-    
-    const navigate = useNavigate()
+    const [emailInput, setEmailInput] = useState('');
+    const [passwordInput, setPasswordInput] = useState('');
 
-    const {getPermissions, addGroup} = useRequests();
+    const navigate = useNavigate();
 
-    async function handleGetPermissions() {
-        const response = await getPermissions();
+    const {addEmployee} = useRequests();
 
-        if (!response.detail) {
-            setPermissionsData(response.data.permissions);
-        }
-    }
+    async function handleAddEmployee() {
+        const [name, email, password] = [nameInput, emailInput, passwordInput];
 
-    async function handleAddGroup() {
-        const name = nameInput;
-        const permissions = selectedPermissions.join(',');
-
-        const data: groupDTO = {
-            name,
-            permissions
-        };
-
-        if (!name) {
+        if(!name || !email || !password) {
             setInfoMessage('Preencha todos os campos!');
             return;
         }
 
+        const data: employeeDTO = {
+            name,
+            email,
+            password
+        }
+
         setRequestLoading(true);
 
-        const response = await addGroup(data);
+        const response = await addEmployee(data);
 
         setRequestLoading(false);
 
@@ -53,17 +43,11 @@ function AddGroup() {
             setInfoMessage(response.detail);
         }
 
-        navigate('/groups');
+        navigate('/employees');
     }
 
-    useEffect(() => {
-        Promise.resolve(handleGetPermissions()).finally(() => {
-            setRequestLoading(false)
-        });
-    }, []);
-
     return (
-        <PermissionMiddleware codeName="add_group">
+        <PermissionMiddleware codeName="add_employee">
             <Helmet>
                 <title>Adicionar um Cargo</title>
             </Helmet>
@@ -72,8 +56,8 @@ function AddGroup() {
 
             <PageTitleWrapper>
                 <PageTitle  
-                    heading="Adicionar um Cargo"
-                    subHeading="Adicionar um novo cargo e defina as suas permissões"
+                    heading="Adicionar um Funionário"
+                    subHeading="Adicionar um novo funcionário"
 
                 />
             </PageTitleWrapper>
@@ -94,16 +78,26 @@ function AddGroup() {
                         onChange={(e) => setNameInput(e.target.value)}
                     />
 
-                    <PermissionsList 
-                        permissionsData={permissionsData}
-                        selectedPermissions={selectedPermissions}
-                        setSelectedPermissions={setSelectedPermissions}
+                    <TextField 
+                        type="email"
+                        fullWidth
+                        label="E-mail *"
+                        value={emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                    />
+
+                    <TextField 
+                        type="password"
+                        fullWidth
+                        label="Senha *"
+                        value={passwordInput}
+                        onChange={(e) => setPasswordInput(e.target.value)}
                     />
 
                     <Button 
                         variant="outlined"
                         sx={{width: 90, mt: 3}}
-                        onClick={requestLoading ? () => null : handleAddGroup}
+                        onClick={requestLoading ? () => null : handleAddEmployee}
                         disabled={requestLoading}
                     >
                         Salvar
@@ -111,7 +105,7 @@ function AddGroup() {
                 </Stack>
             </Container>
         </PermissionMiddleware>
-    );
+    )
 }
 
-export default AddGroup;
+export default AddEmployee;
