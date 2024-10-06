@@ -1,7 +1,7 @@
 import { Button, Container, LinearProgress, Snackbar, Stack, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PageTitle from "src/components/PageTitle";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PermissionsList from "src/components/PermissionsList";
@@ -16,10 +16,21 @@ function EditGroup() {
     const [nameInput, setNameInput] = useState('');
     const [permissionsData, setPermissionsData] = useState<PermissionDetail[]>([])
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([])
-    
-    const navigate = useNavigate()
 
-    const {getPermissions, addGroup} = useRequests();
+    const {id: groupId} = useParams();
+    const navigate = useNavigate()
+    const {getPermissions, getAnGroup, editGroup} = useRequests();
+
+    async function handleGetAnGroup() {
+        const response = await getAnGroup(+groupId);
+
+        if (!response.detail) {
+            setNameInput(response.data.group.name);
+
+            const permissions = response.data.group.permissions.map((item) => item.id);
+            setSelectedPermissions(permissions);
+        }
+    }
 
     async function handleGetPermissions() {
         const response = await getPermissions();
@@ -29,7 +40,7 @@ function EditGroup() {
         }
     }
 
-    async function handleAddGroup() {
+    async function handleEditGroup() {
         const name = nameInput;
         const permissions = selectedPermissions.join(',');
 
@@ -45,7 +56,7 @@ function EditGroup() {
 
         setRequestLoading(true);
 
-        const response = await addGroup(data);
+        const response = await editGroup(+groupId, data);
 
         setRequestLoading(false);
 
@@ -57,23 +68,23 @@ function EditGroup() {
     }
 
     useEffect(() => {
-        Promise.resolve(handleGetPermissions()).finally(() => {
+        Promise.resolve([handleGetPermissions(), handleGetAnGroup()]).finally(() => {
             setRequestLoading(false)
         });
     }, []);
 
     return (
-        <PermissionMiddleware codeName="add_group">
+        <PermissionMiddleware codeName="change_group">
             <Helmet>
-                <title>Adicionar um Cargo</title>
+                <title>Editar um Cargo</title>
             </Helmet>
 
             {requestLoading && <LinearProgress sx={{height: 2}} color="primary" />}
 
             <PageTitleWrapper>
                 <PageTitle  
-                    heading="Adicionar um Cargo"
-                    subHeading="Adicionar um novo cargo e defina as suas permissões"
+                    heading="Editar um Cargo"
+                    subHeading="Editar um novo cargo e defina as suas permissões"
 
                 />
             </PageTitleWrapper>
@@ -103,7 +114,7 @@ function EditGroup() {
                     <Button 
                         variant="outlined"
                         sx={{width: 90, mt: 3}}
-                        onClick={requestLoading ? () => null : handleAddGroup}
+                        onClick={requestLoading ? () => null : handleEditGroup}
                         disabled={requestLoading}
                     >
                         Salvar

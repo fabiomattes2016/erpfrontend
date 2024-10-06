@@ -66,7 +66,7 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                             handlePermissionExists('change_group') &&
                                             <Tooltip title="Editar cargo" arrow>
                                                 <IconButton 
-                                                    onClick={() => handleEditGroup(group.id)}
+                                                    onClick={() => navigate(`/groups/edit/${group.id}`)}
                                                     sx={{
                                                         '&:hover': {
                                                             background: theme.colors.primary.lighter

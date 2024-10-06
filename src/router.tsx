@@ -20,6 +20,7 @@ const SignIn = Loader(lazy(() => import('src/content/pages/Auth/SignIn')));
 // Groups
 const Groups = Loader(lazy(() => import('src/content/pages/Groups')));
 const AddGroup = Loader(lazy(() => import('src/content/pages/AddGroup')));
+const EditGroup = Loader(lazy(() => import('src/content/pages/EditGroup')));
 
 // Pages
 
@@ -103,6 +104,10 @@ const routes: RouteObject[] = [
           {
             path: 'add-group',
             element: <AddGroup />
+          },
+          {
+            path: 'groups/edit/:id',
+            element: <EditGroup />
           }
         ]
       },

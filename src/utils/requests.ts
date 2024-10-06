@@ -40,7 +40,7 @@ const addGroup = async (data: groupDTO) => {
 }
 
 const editGroup = async (groupId: number, data: groupDTO) => {
-    const response = await useApi(`/companies/groups/${groupId}`, 'PUT', data);
+    const response = await useApi(`companies/groups/${groupId}`, 'PUT', data);
     return response;
 }
 
