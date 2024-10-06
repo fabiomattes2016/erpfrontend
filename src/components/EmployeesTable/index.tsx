@@ -3,27 +3,27 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { Card, Container, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
-import { GroupDetail } from "src/models/group";
+import { Employee } from "src/models/employee"
 import { useAuth } from "src/utils/auth";
 import { useRequests } from "src/utils/requests";
 
 type Props = {
-    groupsList: GroupDetail[];
+    employeesList: Employee[];
     refreshList: () => void;
 }
 
-function GroupsTable({groupsList, refreshList}: Props) {
+function EmployessTable({employeesList, refreshList}: Props) {
     const {handlePermissionExists} = useAuth();
-    const {deleteGroup} = useRequests();
+    const {deleteEmployee} = useRequests();
     const theme = useTheme();
     const navigate = useNavigate();
 
-    function handleEditGroup(id: number) {
-        navigate(`/groups/edit/${id}`);
+    function handleEditEmployee(id: number) {
+        navigate(`/employees/edit/${id}`);
     }
 
-    async function handleDeleteGroup(id: number) {
-        await deleteGroup(id);
+    async function handleDeleteEmployee(id: number) {
+        await deleteEmployee(id);
         refreshList();
     }
 
@@ -36,19 +36,20 @@ function GroupsTable({groupsList, refreshList}: Props) {
                             <TableRow>
                                 <TableCell>ID</TableCell>
                                 <TableCell>Nome</TableCell>
+                                <TableCell>E-mail</TableCell>
                                 <TableCell align="right">Ação</TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-                            {groupsList.map((group) => (
-                                <TableRow hover key={group.id}>
+                            {employeesList.map((employee) => (
+                                <TableRow hover key={employee.id}>
                                     <TableCell>
                                         <Typography 
                                             fontWeight="bold"
                                             gutterBottom
                                         >
-                                            #{group.id}
+                                            #{employee.id}
                                         </Typography>
                                     </TableCell>
 
@@ -57,16 +58,25 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                             fontWeight="bold"
                                             gutterBottom
                                         >
-                                            {group.name}
+                                            {employee.name}
+                                        </Typography>
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Typography 
+                                            fontWeight="bold"
+                                            gutterBottom
+                                        >
+                                            {employee.email}
                                         </Typography>
                                     </TableCell>
 
                                     <TableCell align="right">
                                         {
-                                            handlePermissionExists('change_group') &&
-                                            <Tooltip title="Editar cargo" arrow>
+                                            handlePermissionExists('change_employee') &&
+                                            <Tooltip title="Editar funcionário" arrow>
                                                 <IconButton 
-                                                    onClick={() => handleEditGroup(group.id)}
+                                                    onClick={() => handleEditEmployee(employee.id)}
                                                     sx={{
                                                         '&:hover': {
                                                             background: theme.colors.primary.lighter
@@ -82,10 +92,10 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                         }
 
                                         {
-                                            handlePermissionExists('delete_group') &&
-                                            <Tooltip title="Excluir cargo" arrow>
+                                            handlePermissionExists('delete_employee') &&
+                                            <Tooltip title="Excluir funcionário" arrow>
                                                 <IconButton 
-                                                    onClick={() => handleDeleteGroup(group.id)}
+                                                    onClick={() => handleDeleteEmployee(employee.id)}
                                                     sx={{
                                                         '&:hover': {
                                                             background: theme.colors.primary.lighter
@@ -110,4 +120,4 @@ function GroupsTable({groupsList, refreshList}: Props) {
     );
 }
 
-export default GroupsTable;
+export default EmployessTable
