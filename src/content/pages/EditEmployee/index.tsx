@@ -1,41 +1,48 @@
 import { Button, Container, LinearProgress, Snackbar, Stack, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PageTitle from "src/components/PageTitle";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { PermissionMiddleware } from "src/middlewares/permissionMiddleware";
 import { employeeDTO } from "src/models/dto/employeeDTO";
 import { useRequests } from "src/utils/requests";
 
-function AddEmployee() {
+function EditEmployee() {
     const [requestLoading, setRequestLoading] = useState(false);
     const [infoMessage, setInfoMessage] = useState('');
     const [nameInput, setNameInput] = useState('');
     const [emailInput, setEmailInput] = useState('');
-    const [passwordInput, setPasswordInput] = useState('');
 
     const navigate = useNavigate();
+    const {id: employeeId} = useParams();
+    const {editEmployee, getAnEmployee} = useRequests();
 
-    const {addEmployee} = useRequests();
+    async function handleGetAnEmployee() {
+        const response = await getAnEmployee(+employeeId);
 
-    async function handleAddEmployee() {
-        const [name, email, password] = [nameInput, emailInput, passwordInput];
+        if (!response.detail) {
+            setNameInput(response.data.name);
+            setEmailInput(response.data.email);
+        }
+    }
 
-        if(!name || !email || !password) {
+    async function handleEditEmployee() {
+        const [name, email] = [nameInput, emailInput];
+
+        if(!name || !email) {
             setInfoMessage('Preencha todos os campos!');
             return;
         }
 
         const data: employeeDTO = {
             name,
-            email,
-            password
+            email
         }
 
         setRequestLoading(true);
 
-        const response = await addEmployee(data);
+        const response = await editEmployee(+employeeId, data);
 
         setRequestLoading(false);
 
@@ -46,18 +53,24 @@ function AddEmployee() {
         navigate('/employees');
     }
 
+    useEffect(() => {
+        Promise.resolve(handleGetAnEmployee()).finally(() => {
+            setRequestLoading(false);
+        });
+    }, [])
+
     return (
-        <PermissionMiddleware codeName="add_employee">
+        <PermissionMiddleware codeName="change_employee">
             <Helmet>
-                <title>Adicionar um Cargo</title>
+                <title>Editar um Funionário</title>
             </Helmet>
 
             {requestLoading && <LinearProgress sx={{height: 2}} color="primary" />}
 
             <PageTitleWrapper>
                 <PageTitle  
-                    heading="Adicionar um Funcionário"
-                    subHeading="Adicionar um novo funcionário"
+                    heading="Editar um Funionário"
+                    subHeading="Editar um novo funcionário"
 
                 />
             </PageTitleWrapper>
@@ -86,18 +99,10 @@ function AddEmployee() {
                         onChange={(e) => setEmailInput(e.target.value)}
                     />
 
-                    <TextField 
-                        type="password"
-                        fullWidth
-                        label="Senha *"
-                        value={passwordInput}
-                        onChange={(e) => setPasswordInput(e.target.value)}
-                    />
-
                     <Button 
                         variant="outlined"
                         sx={{width: 90, mt: 3}}
-                        onClick={requestLoading ? () => null : handleAddEmployee}
+                        onClick={requestLoading ? () => null : handleEditEmployee}
                         disabled={requestLoading}
                     >
                         Salvar
@@ -108,4 +113,4 @@ function AddEmployee() {
     )
 }
 
-export default AddEmployee;
+export default EditEmployee;
