@@ -1,41 +1,41 @@
 import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import GroupsTable from "src/components/GroupsTable";
+import EmployessTable from "src/components/EmployeesTable";
 import PageTitle from "src/components/PageTitle";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { PermissionMiddleware } from "src/middlewares/permissionMiddleware";
-import { GroupDetail } from "src/models/group";
+import { Employee } from "src/models/employee";
 import { useRequests } from "src/utils/requests";
 
-function Groups() {
+function Employees() {
     const [requestLoading, setRequestLoading] = useState(true);
-    const [groupsData, setGroupsData] = useState<GroupDetail[]>([]);
+    const [employeesData, setEmployeesData] = useState<Employee[]>([]);
 
-    const {getGroups} = useRequests();
+    const {getEmployees} = useRequests();
 
-    async function handleGetGroups() {
-        const response = await getGroups();
-        setGroupsData(response.data.groups);
+    async function handleGetEmployees() {
+        const response = await getEmployees();
+        setEmployeesData(response.data.employees);
         setRequestLoading(false);
     }
 
     useEffect(() => {
-        handleGetGroups();
+        handleGetEmployees();
     }, []);
 
     return (
-       <PermissionMiddleware codeName="view_group">
+        <PermissionMiddleware codeName="view_employee">
             <>
                 <Helmet>
-                    <title>Cargos</title>
+                    <title>Funcionários</title>
                 </Helmet>
 
                 <PageTitleWrapper>
-                    <PageTitle heading="Cargos" subHeading="Consulte os cargos da empresa..." />
+                    <PageTitle heading="Funcionários" subHeading="Consulte os funcionários da empresa..." />
                 </PageTitleWrapper>
             </>
-            
+
             <Container 
                 maxWidth="xl"
                 sx={{
@@ -43,13 +43,13 @@ function Groups() {
                     transition: 'all .5s'
                 }}
             >
-                <GroupsTable 
-                    refreshList={handleGetGroups}
-                    groupsList={groupsData}
+                <EmployessTable 
+                    refreshList={handleGetEmployees}
+                    employeesList={employeesData}
                 />
             </Container>
-       </PermissionMiddleware>
-    );
+        </PermissionMiddleware>
+    )
 }
 
-export default Groups;
+export default Employees;

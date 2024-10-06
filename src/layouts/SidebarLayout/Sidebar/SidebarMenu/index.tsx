@@ -243,6 +243,45 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
+              Funcionários
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/employees"
+                  startIcon={<GroupsTwoToneIcon />}
+                >
+                  Gerenciar
+                </Button>
+              </ListItem>
+            </List>
+
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/add-employee"
+                  startIcon={<Add />}
+                >
+                  Adicionar Funcionário
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
               Dashboards
             </ListSubheader>
           }

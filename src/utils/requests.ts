@@ -50,7 +50,7 @@ const deleteGroup = async (groupId: number) => {
 }
 
 const getEmployees = async () => {
-    const response = useApi<ApiGetEmployess>('companies/employess');
+    const response = useApi<ApiGetEmployess>('companies/employees');
     return response;
 }
 
