@@ -32,6 +32,7 @@ import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwo
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
+import { Add } from '@mui/icons-material';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -203,7 +204,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Adminsitração
+              Cargos
             </ListSubheader>
           }
         >
@@ -217,7 +218,21 @@ function SidebarMenu() {
                   to="/groups"
                   startIcon={<GroupsTwoToneIcon />}
                 >
-                  Cargos
+                  Gerenciar
+                </Button>
+              </ListItem>
+            </List>
+
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/add-group"
+                  startIcon={<Add />}
+                >
+                  Adicionar Cargo
                 </Button>
               </ListItem>
             </List>

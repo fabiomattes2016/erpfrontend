@@ -1,7 +1,7 @@
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { Card, Container, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { useTheme } from "@mui/styles";
+import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
 import { GroupDetail } from "src/models/group";
 import { useAuth } from "src/utils/auth";
@@ -65,7 +65,17 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                         {
                                             handlePermissionExists('change_group') &&
                                             <Tooltip title="Editar cargo" arrow>
-                                                <IconButton onClick={() => handleEditGroup(group.id)}>
+                                                <IconButton 
+                                                    onClick={() => handleEditGroup(group.id)}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            background: theme.colors.primary.lighter
+                                                        },
+                                                        color: theme.palette.primary.main
+                                                    }}
+                                                    color='inherit'
+                                                    size='small'
+                                                >
                                                     <EditTwoToneIcon />
                                                 </IconButton>
                                             </Tooltip>
@@ -74,7 +84,17 @@ function GroupsTable({groupsList, refreshList}: Props) {
                                         {
                                             handlePermissionExists('delete_group') &&
                                             <Tooltip title="Excluir cargo" arrow>
-                                                <IconButton onClick={() => handleDeleteGroup(group.id)}>
+                                                <IconButton 
+                                                    onClick={() => handleDeleteGroup(group.id)}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            background: theme.colors.primary.lighter
+                                                        },
+                                                        color: theme.palette.error.main
+                                                    }}
+                                                    color='inherit'
+                                                    size='small'
+                                                >
                                                     <DeleteTwoToneIcon />
                                                 </IconButton>
                                             </Tooltip>

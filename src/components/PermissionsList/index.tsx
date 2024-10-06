@@ -21,7 +21,7 @@ function PermissionsList({permissionsData, selectedPermissions, setSelectedPermi
 
     return (
         <FormGroup>
-            {permissionsData.map((item) => {
+            {permissionsData.map((item) => (
                 <FormControlLabel 
                     key={item.id} 
                     control={
@@ -34,7 +34,7 @@ function PermissionsList({permissionsData, selectedPermissions, setSelectedPermi
                     }
                     label={item.name}
                 />
-            })}
+            ))}
         </FormGroup>
     );
 }
