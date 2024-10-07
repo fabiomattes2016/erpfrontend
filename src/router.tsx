@@ -29,6 +29,7 @@ const EditEmployee = Loader(lazy(() => import('src/content/pages/EditEmployee'))
 
 // Tasks
 const Tasks = Loader(lazy(() => import('src/content/pages/Tasks')));
+const AddTask = Loader(lazy(() => import('src/content/pages/AddTask')));
 
 // Pages
 
@@ -144,6 +145,10 @@ const routes: RouteObject[] = [
           {
             path: 'tasks',
             element: <Tasks />
+          },
+          {
+            path: 'add-task',
+            element: <AddTask />
           }
         ]
       },

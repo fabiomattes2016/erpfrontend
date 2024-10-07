@@ -301,19 +301,19 @@ function SidebarMenu() {
               </ListItem>
             </List>
 
-            {/* <List component="div">
+            <List component="div">
               <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/add-employee"
+                  to="/add-task"
                   startIcon={<Add />}
                 >
-                  Adicionar Funcionário
+                  Adicionar Tarefa
                 </Button>
               </ListItem>
-            </List> */}
+            </List>
           </SubMenuWrapper>
         </List>
 
